@@ -1,13 +1,9 @@
-import Datadisplay from "./components/datadisplay/Datadisplay";
-import Navbar from "./components/navbar/Navbar";
-import Footer from "./components/footer/Footer";
+import Searchbar from "./components/searchbar/Searchbar";
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <Datadisplay />
-      <Footer />
+      <Searchbar />
     </div>
   );
 }
