@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import { TextField, InputAdornment, Container } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 
 const SearchBar = () => {
   // const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [resultsSearch, setResultsSearch] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchResults = await axios.get("https://fakestoreapi.com/products");
-        const dataResults = fetchResults.data; // axios already parses JSON
+        const fetchResults = await axios.get(
+          "https://fakestoreapi.com/products?query="
+        );
+        const dataResults = fetchResults.data;
         console.log(dataResults);
-        setResults(dataResults);
+        setResultsSearch(dataResults);
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -25,6 +28,18 @@ const SearchBar = () => {
 
     fetchData();
   }, []);
+
+  const handleOnSearch = (string, results)=>{
+    console.log(string, results)
+  }
+
+  const handleOnHover = (item)=>{
+console.log("Item hovered:", item)
+  }
+
+  const handleOnSelect = (item)=>{
+    console.log("Item hovered:",item)
+  }
 
   if (loading) {
     return <h5>...loading</h5>;
@@ -39,18 +54,13 @@ const SearchBar = () => {
       style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
     >
       <div style={{ width: "300px" }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => setQuery(e.target.value)}
+        
+        <ReactSearchAutocomplete
+        items={resultsSearch}
+        onSearch={handleOnSearch}
+        onSelect={handleOnSelect}
+        onHover={handleOnHover}
+        placeholder="Type search"
         />
       </div>
     </Container>
