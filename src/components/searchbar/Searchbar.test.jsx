@@ -1,4 +1,5 @@
 import React from "react";
+import jest from "jest"
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Searchbar from "./Searchbar";
 import axios from "axios";
@@ -33,7 +34,7 @@ describe("Searchbar Component", () => {
 
     await waitFor(() => {
       const suggestions = screen.getAllByRole("listitem");
-      expect(suggestions).toHaveLength(3); // Two matching products
+      expect(suggestions).toHaveLength(3); 
     });
   });
 

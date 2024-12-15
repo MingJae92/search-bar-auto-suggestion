@@ -13,6 +13,7 @@ const Searchbar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const dropdownRef = useRef(null);
   const debounceTimeoutRef = useRef(null);
 
@@ -41,6 +42,7 @@ const Searchbar = () => {
     const input = event.target.value;
     setSearchInput(input);
     setSelectedProduct(null);
+    setActiveSuggestionIndex(-1);
 
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
@@ -51,10 +53,27 @@ const Searchbar = () => {
     }, 300);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "ArrowDown") {
+      setActiveSuggestionIndex((prevIndex) =>
+        Math.min(prevIndex + 1, suggestions.length - 1)
+      );
+    } else if (event.key === "ArrowUp") {
+      setActiveSuggestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    } else if (event.key === "Enter" && activeSuggestionIndex >= 0) {
+      handleSuggestionClick(suggestions[activeSuggestionIndex]);
+    }
+  };
+
+  const handleMouseEnter = (index) => {
+    setActiveSuggestionIndex(index);
+  };
+
   const handleSuggestionClick = (product) => {
     setSelectedProduct(product);
     setSearchInput("");
     setSuggestions([]);
+    setActiveSuggestionIndex(-1);
   };
 
   const handleClickOutside = (event) => {
@@ -74,37 +93,47 @@ const Searchbar = () => {
     };
   }, []);
 
-  if (loading) {
-    return (
-      <ListItem>
-        <ListItemText primary="Loading..." />
-      </ListItem>
-    );
-  }
-
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
       <TextField
+        id="product-search"
         label="Search Products"
         variant="outlined"
         fullWidth
         value={searchInput}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         autoComplete="off"
+        aria-autocomplete="list"
+        aria-controls="suggestions-list"
+        aria-expanded={suggestions.length > 0}
+        aria-activedescendant={
+          activeSuggestionIndex >= 0 ? `suggestion-${activeSuggestionIndex}` : ""
+        }
       />
       <div ref={dropdownRef}>
         <List
+          id="suggestions-list"
           style={{
             marginTop: "10px",
             maxHeight: "200px",
             overflowY: "auto",
           }}
+          role="listbox"
         >
-          {suggestions.map((suggestion) => (
+          {suggestions.map((suggestion, index) => (
             <ListItem
               key={suggestion.id}
               button
               onClick={() => handleSuggestionClick(suggestion)}
+              onMouseEnter={() => handleMouseEnter(index)}
+              style={{
+                backgroundColor:
+                  index === activeSuggestionIndex ? "#f0f0f0" : "inherit",
+              }}
+              role="option"
+              id={`suggestion-${index}`}
+              aria-selected={index === activeSuggestionIndex}
             >
               <ListItemText primary={suggestion.title} />
             </ListItem>
