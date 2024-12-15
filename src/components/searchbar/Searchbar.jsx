@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Box,
 } from "@mui/material";
 import axios from "axios";
 
@@ -94,7 +95,22 @@ const Searchbar = () => {
   }, []);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "0 auto",
+        padding: { xs: "10px", sm: "20px" },
+        width: "90%",
+        maxWidth: "600px",
+        textAlign: "center",
+        "@media (max-width: 600px)": {
+          padding: "10px",
+        },
+      }}
+    >
       <TextField
         id="product-search"
         label="Search Products"
@@ -111,13 +127,16 @@ const Searchbar = () => {
           activeSuggestionIndex >= 0 ? `suggestion-${activeSuggestionIndex}` : ""
         }
       />
-      <div ref={dropdownRef}>
+      <Box ref={dropdownRef} sx={{ marginTop: "10px", width: "100%" }}>
         <List
           id="suggestions-list"
-          style={{
-            marginTop: "10px",
+          sx={{
             maxHeight: "200px",
             overflowY: "auto",
+            backgroundColor: "background.paper",
+            "@media (max-width: 600px)": {
+              maxHeight: "150px",
+            },
           }}
           role="listbox"
         >
@@ -127,7 +146,7 @@ const Searchbar = () => {
               button
               onClick={() => handleSuggestionClick(suggestion)}
               onMouseEnter={() => handleMouseEnter(index)}
-              style={{
+              sx={{
                 backgroundColor:
                   index === activeSuggestionIndex ? "#f0f0f0" : "inherit",
               }}
@@ -139,15 +158,35 @@ const Searchbar = () => {
             </ListItem>
           ))}
         </List>
-      </div>
+      </Box>
 
       {selectedProduct && (
-        <div style={{ marginTop: "20px" }}>
-          <Typography variant="h6">{selectedProduct.title}</Typography>
-          <Typography variant="body1">{selectedProduct.description}</Typography>
-        </div>
+        <Box sx={{ marginTop: "20px" }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: "1.25rem",
+              "@media (max-width: 600px)": {
+                fontSize: "1rem",
+              },
+            }}
+          >
+            {selectedProduct.title}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "1rem",
+              "@media (max-width: 600px)": {
+                fontSize: "0.875rem",
+              },
+            }}
+          >
+            {selectedProduct.description}
+          </Typography>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
