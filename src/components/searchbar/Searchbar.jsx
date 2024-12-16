@@ -106,15 +106,19 @@ const Searchbar = () => {
         alignItems: "center",
         justifyContent: "center",
         margin: "0 auto",
-        padding: { xs: "10px", sm: "20px" },
-        width: "90%",
-        maxWidth: "600px",
+        padding: { xs: "10px", sm: "20px", md: "30px" },
+        width: { xs: "80%", sm: "90%", md: "600px" },
+        maxWidth: "100%",
         textAlign: "center",
         "@media (max-width: 600px)": {
           padding: "10px",
+          width: "100%",
         },
       }}
     >
+      <Typography variant="h5" sx={{ marginBottom: "10px" }}>
+        Search for an item
+      </Typography>
       <TextField
         id="product-search"
         label="Search Products"
