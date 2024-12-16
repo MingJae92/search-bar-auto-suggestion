@@ -106,13 +106,13 @@ const Searchbar = () => {
         alignItems: "center",
         justifyContent: "center",
         margin: "0 auto",
-        padding: { xs: "10px", sm: "20px", md: "30px" },
-        width: { xs: "80%", sm: "90%", md: "600px" },
-        maxWidth: "100%",
+        padding: { xs: "10px", sm: "20px" },
+        width: "90%",
+        maxWidth: "600px",
         textAlign: "center",
+        backgroundColor: "background.paper", // Optional: Set background color to match the site theme
         "@media (max-width: 600px)": {
           padding: "10px",
-          width: "100%",
         },
       }}
     >
@@ -142,6 +142,10 @@ const Searchbar = () => {
             maxHeight: "200px",
             overflowY: "auto",
             backgroundColor: "background.paper",
+            position: "absolute", // Positioned absolutely within the search bar container
+            top: "100%", // Position the dropdown below the input field
+            width: "100%", // Ensure it spans the full width of the search bar
+            zIndex: 10, // Ensure dropdown is above other elements
             "@media (max-width: 600px)": {
               maxHeight: "150px",
             },
