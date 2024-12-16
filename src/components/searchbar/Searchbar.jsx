@@ -132,7 +132,9 @@ const Searchbar = () => {
         aria-controls="suggestions-list"
         aria-expanded={suggestions.length > 0}
         aria-activedescendant={
-          activeSuggestionIndex >= 0 ? `suggestion-${activeSuggestionIndex}` : ""
+          activeSuggestionIndex >= 0
+            ? `suggestion-${activeSuggestionIndex}`
+            : ""
         }
       />
       <Box ref={dropdownRef} sx={{ marginTop: "10px", width: "100%" }}>
